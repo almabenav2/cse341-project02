@@ -1,12 +1,17 @@
-const mongoose = require('mongoose');
+const { getDatabase } = require('../data/database');
 
-const artistSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  genre: { type: String },
-  // Additional artist fields can be added
-});
+const artistCollection = () => getDatabase().collection('artists');
 
-const Artist = mongoose.model('Artist', artistSchema);
+const createArtist = async (artist) => {
+    return artistCollection().insertOne(artist);
+};
 
-module.exports = Artist;
+const getAllArtists = async () => {
+    return artistCollection().find({}).toArray();
+};
 
+module.exports = {
+    createArtist,
+    getAllArtists,
+    // Add more methods as needed
+};

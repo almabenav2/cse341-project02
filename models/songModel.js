@@ -1,13 +1,17 @@
-const mongoose = require('mongoose');
+const { getDatabase } = require('../data/database');
 
-const songSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  genre: { type: String },
-  releaseDate: { type: Date },
-  artist: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist', required: true },
-  // Additional song fields can be added
-});
+const songCollection = () => getDatabase().collection('songs');
 
-const Song = mongoose.model('Song', songSchema);
+const createSong = async (song) => {
+    return songCollection().insertOne(song);
+};
 
-module.exports = Song;
+const getAllSongs = async () => {
+    return songCollection().find({}).toArray();
+};
+
+module.exports = {
+    createSong,
+    getAllSongs,
+    // Add more methods as needed
+};
