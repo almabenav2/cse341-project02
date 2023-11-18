@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { initDb, getDatabase } = require('./data/database');
 const dotenv = require('dotenv');
-const { initDb } = require('./data/database'); // Adjust the path based on your project structure
 
 // Load environment variables from .env file
 dotenv.config();
@@ -34,6 +34,17 @@ initDb((err) => {
     const songRoutes = require('./routes/songRoutes');
     app.use('/artists', artistRoutes);
     app.use('/songs', songRoutes);
+
+    // Catch 404 errors
+    app.use((req, res, next) => {
+        res.status(404).json({ error: 'Not Found' });
+    });
+
+    // Error handling middleware
+    app.use((err, req, res, next) => {
+        console.error('Error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    });
 
     // Start the server
     app.listen(PORT, () => {
