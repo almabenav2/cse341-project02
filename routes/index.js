@@ -1,16 +1,16 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+router.use('/', require('./swagger'));
 
-// Import your existing routes
 const artistRoutes = require('./artistRoutes');
 const songRoutes = require('./songRoutes');
 
-// Add the "Hello World" route
-router.get('/', (req, res) => {
-  res.send('Hello World!');
+router.get('/', (req, res) => { 
+  //#swagger.tags=['Hello world']
+  res.send('hello world');
 });
 
-// Use the existing routes
+// router.get('/', (req, res) => {res.send('Hello world');});
+
 router.use('/artists', artistRoutes);
 router.use('/songs', songRoutes);
 
