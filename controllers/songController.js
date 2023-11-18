@@ -50,7 +50,6 @@ const createSong = async (req, res) => {
         genre: req.body.genre,
         releaseDate: req.body.releaseDate,
         artist: req.body.artist
-        // Puedes agregar otros campos según sea necesario
     };
     const response = await mongodb.getDatabase().db().collection('songs').insertOne(song);
     if(response.acknowledged) {
@@ -59,7 +58,8 @@ const createSong = async (req, res) => {
         res.status(500).json(response.error || 'Some error occurred while creating the song');
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -72,7 +72,6 @@ const updateSong = async (req, res) => {
         genre: req.body.genre,
         releaseDate: req.body.releaseDate,
         artist: req.body.artist
-        // Puedes agregar otros campos según sea necesario
     };
     const response = await mongodb.getDatabase().db().collection('songs').replaceOne({ _id: songId }, song);
     if(response.modifiedCount > 0) {
@@ -81,7 +80,8 @@ const updateSong = async (req, res) => {
         res.status(500).json(response.error || 'Some error occurred while updating the song');
     }
   } catch (error) {
-    console.log(error);
+    console.error(error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
