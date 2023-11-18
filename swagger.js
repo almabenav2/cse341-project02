@@ -6,7 +6,7 @@ const doc = {
     description: 'Songs API',
     version: '1.0.0',
   },
-  host: 'localhost:4000', 
+  host: 'localhost:5000', 
   schemes: ['https', 'http'],
 };
 

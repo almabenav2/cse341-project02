@@ -1,26 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const { createArtist, getAllArtists } = require('../models/artistModel');
-// ... rest of the code
-router.post('/', async (req, res) => {
-    try {
-        const newArtist = req.body;
-        const result = await createArtist(newArtist);
-        res.json(result.ops[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+const { artistSchema } = require('../controllers/validation');
 
-// Example route to get all artists
-router.get('/', async (req, res) => {
-    try {
-        const artists = await getAllArtists();
-        res.json(artists);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+const artistController = require('../controllers/artistController');
 
-// Add more routes as needed
+router.get('/', artistController.getAll);
+
+router.get('/:id', artistController.getById);
+
+router.post('/', async (req, res, next) => {
+    try {
+        const result = await artistSchema.validateAsync(req.body);
+        console.log(result);
+    } catch (error) {
+        if (error.isJoi) error.status = 422;
+        next(error);
+    }
+}, artistController.createArtist);
+
+router.put('/:id', async (req, res, next) => {
+    try {
+        const result = await artistSchema.validateAsync(req.body);
+        console.log(result);
+    } catch (error) {
+        if (error.isJoi) error.status = 422;
+        next(error);
+    }
+}, artistController.updateArtist);
+
+router.delete('/:id', artistController.deleteArtist);
+
 module.exports = router;

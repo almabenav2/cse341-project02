@@ -7,13 +7,13 @@ let database;
 
 const initDb = (callback) => {
     if (database) {
-        console.log('Db is already initialized');
+        console.log('Db is already initialized!');
         return callback(null, database);
     }
-    MongoClient.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+
+    MongoClient.connect(process.env.MONGODB_URL)
         .then((client) => {
-            database = client.db(); // Access the database from the client
-            console.log('Connected to MongoDB');
+            database = client;
             callback(null, database);
         })
         .catch((err) => {
@@ -22,13 +22,13 @@ const initDb = (callback) => {
 };
 
 const getDatabase = () => {
-    if (!database) {
-        throw Error('Database not initialized');
+    if(!database) {
+        throw new Error('Database not initialized');
     }
     return database;
 };
 
 module.exports = {
     initDb,
-    getDatabase
+    getDatabase,
 };

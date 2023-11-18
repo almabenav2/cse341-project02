@@ -1,27 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const { createSong, getAllSongs } = require('../models/songModel');
+const { songsSchema } = require('../controllers/validation');
 
-// Example route to create a song
-router.post('/', async (req, res) => {
+const songsController = require('../controllers/songController');
+
+router.get('/', songsController.getAll);
+
+router.get('/:id', songsController.getById);
+
+router.post('/', async (req, res, next) => {
     try {
-        const newSong = req.body;
-        const result = await createSong(newSong);
-        res.json(result.ops[0]);
+        const result = await songsSchema.validateAsync(req.body);
+        console.log(result);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        if (error.isJoi) error.status = 422;
+        next(error);
     }
-});
+}, songsController.createSong);
 
-// Example route to get all songs
-router.get('/', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
     try {
-        const songs = await getAllSongs();
-        res.json(songs);
+        const result = await songsSchema.validateAsync(req.body);
+        console.log(result);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        if (error.isJoi) error.status = 422;
+        next(error);
     }
-});
+}, songsController.updateSong);
 
-// Add more routes as needed
+router.delete('/:id', songsController.deleteSong);
+
 module.exports = router;
