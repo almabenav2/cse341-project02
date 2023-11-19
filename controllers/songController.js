@@ -53,13 +53,13 @@ const createSong = async (req, res) => {
     };
     const response = await mongodb.getDatabase().db().collection('songs').insertOne(song);
     if(response.acknowledged) {
-        res.status(204).end();
+        res.status(204).send();
     } else {
         res.status(500).json(response.error || 'Some error occurred while creating the song');
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 };
 
@@ -75,7 +75,7 @@ const updateSong = async (req, res) => {
     };
     const response = await mongodb.getDatabase().db().collection('songs').replaceOne({ _id: songId }, song);
     if(response.modifiedCount > 0) {
-        res.status(204).end();
+        res.status(204).send();
     } else {
         res.status(500).json(response.error || 'Some error occurred while updating the song');
     }

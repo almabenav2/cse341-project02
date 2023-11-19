@@ -37,7 +37,7 @@ const createArtist = async (req, res) => {
     };
     const response = await mongodb.getDatabase().db().collection('artists').insertOne(artist);
     if (response.acknowledged) {
-        res.status(204).end();
+        res.status(204).send();
     } else {
         res.status(500).json(response.error || 'Some error occurred while creating the artist');
     }
@@ -56,7 +56,7 @@ const updateArtist = async (req, res) => {
     };
     const response = await mongodb.getDatabase().db().collection('artists').replaceOne({ _id: artistId }, artist);
     if (response.modifiedCount > 0) {
-        res.status(204).end();
+        res.status(204).send();
     } else {
         res.status(500).json(response.error || 'Some error occurred while updating the artist');
     }
