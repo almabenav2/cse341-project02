@@ -43,7 +43,7 @@ const getById = async (req, res) => {
 };
 
 const createSong = async (req, res) => {
-    //#swagger.tags = ['Songs']
+  //#swagger.tags = ['Songs']
   try {
     const song = {
         title: req.body.title,
@@ -52,7 +52,7 @@ const createSong = async (req, res) => {
         artist: req.body.artist
     };
     const response = await mongodb.getDatabase().db().collection('songs').insertOne(song);
-    if(response.acknowledged > 0) {
+    if (response.acknowledged) {
         res.status(204).send();
     } else {
         res.status(500).json(response.error || 'Some error occurred while creating the song');
@@ -79,7 +79,7 @@ const updateSong = async (req, res) => {
         res.status(500).json(response.error || 'Some error occurred while updating the song');
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
