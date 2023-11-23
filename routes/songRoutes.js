@@ -12,8 +12,11 @@ router.post('/', async (req, res, next) => {
     try {
         const result = await songsSchema.validateAsync(req.body);
         console.log(result);
+        // Llama a next() para pasar al siguiente middleware (songsController.createSong)
+        next();
     } catch (error) {
         if (error.isJoi) error.status = 422;
+        // Llama a next() para manejar el error
         next(error);
     }
 }, songsController.createSong);
@@ -22,8 +25,11 @@ router.put('/:id', async (req, res, next) => {
     try {
         const result = await songsSchema.validateAsync(req.body);
         console.log(result);
+        // Llama a next() para pasar al siguiente middleware (songsController.updateSong)
+        next();
     } catch (error) {
         if (error.isJoi) error.status = 422;
+        // Llama a next() para manejar el error
         next(error);
     }
 }, songsController.updateSong);
