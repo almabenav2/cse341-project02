@@ -59,7 +59,6 @@ const createSong = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 };
 
@@ -81,17 +80,15 @@ const updateSong = async (req, res) => {
     }
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 const deleteSong = async (req, res) => {
     //#swagger.tags = ['Songs']
   try {
-
     const songId = new ObjectId(req.params.id);
     const response = await mongodb.getDatabase().db().collection('songs').deleteOne({ _id: songId });
-    if(response.deletedCount > 0) {
+    if (response.deletedCount > 0) {
         res.status(204).end();
     } else {
         res.status(500).json(response.error || 'Some error occurred while deleting the song');
