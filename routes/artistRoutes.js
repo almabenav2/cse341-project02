@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { artistSchema } = require('../controllers/validation');
-
 const artistController = require('../controllers/artistController');
+const { isAuthenticated } = require("../middleware/authentication");
 
 router.get('/', artistController.getAll);
 

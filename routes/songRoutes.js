@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { songSchema } = require('../controllers/validation');
-
 const songController = require('../controllers/songController');
+const { isAuthenticated } = require("../middleware/authentication");
 
 router.get('/', songController.getAll);
 

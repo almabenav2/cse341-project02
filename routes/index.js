@@ -1,17 +1,21 @@
 const router = require('express').Router();
-router.use('/', require('./swagger'));
+const passport = require('passport');
 
-const artistRoutes = require('./artistRoutes');
-const songRoutes = require('./songRoutes');
+router.use('/', require('./swagger'));
+router.use('/artists', require('./artistRoutes'));
+router.use('/songs', require('./songRoutes'));
 
 router.get('/', (req, res) => { 
   //#swagger.tags=['Hello world']
   res.send('hello world');
 });
 
-// router.get('/', (req, res) => {res.send('Hello world');});
-
-router.use('/artists', artistRoutes);
-router.use('/songs', songRoutes);
+router.get('/login', passport.authenticate('github'), (req, res) => {});
+router.get('/logout', function(req, res, next) {
+  req.logout(function(err) {
+    if (err) {return next(err);}
+    res.redirect('/');
+  });  
+});
 
 module.exports = router;
