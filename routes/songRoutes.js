@@ -8,7 +8,7 @@ router.get('/', songController.getAll);
 
 router.get('/:id', songController.getById);
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAuthenticated, async (req, res, next) => {
     try {
         const result = await songSchema.validateAsync(req.body);
         console.log(result);
@@ -19,7 +19,7 @@ router.post('/', async (req, res, next) => {
     }
 }, songController.createSong);
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAuthenticated, async (req, res, next) => {
     try {
         const result = await songSchema.validateAsync(req.body);
         console.log(result);
@@ -30,6 +30,6 @@ router.put('/:id', async (req, res, next) => {
     }
 }, songController.updateSong);
 
-router.delete('/:id', songController.deleteSong);
+router.delete('/:id', isAuthenticated, songController.deleteSong);
 
 module.exports = router;

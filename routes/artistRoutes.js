@@ -8,7 +8,7 @@ router.get('/', artistController.getAll);
 
 router.get('/:id', artistController.getById);
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAuthenticated, async (req, res, next) => {
     try {
         const result = await artistSchema.validateAsync(req.body);
         console.log(result);
@@ -19,7 +19,7 @@ router.post('/', async (req, res, next) => {
     }
 }, artistController.createArtist);
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAuthenticated, async (req, res, next) => {
     try {
         const result = await artistSchema.validateAsync(req.body);
         console.log(result);
@@ -30,6 +30,6 @@ router.put('/:id', async (req, res, next) => {
     }
 }, artistController.updateArtist);
 
-router.delete('/:id', artistController.deleteArtist);
+router.delete('/:id', isAuthenticated, artistController.deleteArtist);
 
 module.exports = router;
