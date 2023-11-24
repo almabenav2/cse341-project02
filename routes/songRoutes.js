@@ -1,35 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const { songsSchema } = require('../controllers/validation');
+const { songSchema } = require('../controllers/validation');
 
-const songsController = require('../controllers/songController');
+const songController = require('../controllers/songController');
 
-router.get('/', songsController.getAll);
+router.get('/', songController.getAll);
 
-router.get('/:id', songsController.getById);
+router.get('/:id', songController.getById);
 
 router.post('/', async (req, res, next) => {
     try {
-        const result = await songsSchema.validateAsync(req.body);
+        const result = await songSchema.validateAsync(req.body);
         console.log(result);
         next();
     } catch (error) {
         if (error.isJoi) error.status = 422;
         next(error);
     }
-}, songsController.createSong);
+}, songController.createSong);
 
 router.put('/:id', async (req, res, next) => {
     try {
-        const result = await songsSchema.validateAsync(req.body);
+        const result = await songSchema.validateAsync(req.body);
         console.log(result);
         next();
     } catch (error) {
         if (error.isJoi) error.status = 422;
         next(error);
     }
-}, songsController.updateSong);
+}, songController.updateSong);
 
-router.delete('/:id', songsController.deleteSong);
+router.delete('/:id', songController.deleteSong);
 
 module.exports = router;
