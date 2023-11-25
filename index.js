@@ -22,14 +22,14 @@ app
     .use((req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
         next();
-})
+    })
     .use(cors({
         methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
         origin: '*'
     }))
-    .use('/', require('./routes'));
+    .use('/', require('./routes/index.js'));
 
     passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_CLIENT_ID,
@@ -38,8 +38,7 @@ app
     },
     function(acessToken, refreshToken, profile, done) {
         return done(null, profile);
-    }
-    ))
+    }));
 
     passport.serializeUser((user, done) => {
         done(null, user);

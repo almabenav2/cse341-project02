@@ -14,41 +14,44 @@ const getAll = async (req, res) => {
 	}
 };
 
-const getById = async (req, res) => {
+ const getById = async (req, res) => {
   //#swagger.tags = ['Artists']
-  try {
-  const artistId = new ObjectId(req.params.id);
-  const result = await mongodb.getDatabase().db().collection('artists').find({ _id: artistId });
-  result.toArray().then((artists) => {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(artists[0]);
-    });
-  } catch (error) {
-    console.log(error);
+  if (ObjectId.isValid(req.params.id)) {
+    const artistId = new ObjectId(req.params.id);
+    const result = await mongodb.getDatabase().db().collection('artists').find({ _id: artistId });
+    try {
+      result.toArray().then((artists) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(artists[0]);
+      });
+    } catch (err) {
+      res.status(400).json({ message: err });
+    }
+  } else {
+    res.status(400).json('Must use a valid artist id to find a artist.');
   }
 };
 
 const createArtist = async (req, res) => {
   //#swagger.tags = ['Artists']
+  const artist = {
+    name: req.body.name,
+    genre: req.body.genre
+  };
   try {
-    const artist = {
-        name: req.body.name,
-        genre: req.body.genre
-    };
     const response = await mongodb.getDatabase().db().collection('artists').insertOne(artist);
     if (response.acknowledged) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Some error occurred while creating the artist');
-    }
+      console.log(response.insertedId);
+      res.status(201).json(response);
+    } 
   } catch (error) {
-    console.log(error);
+    res.status(500).json(response.error || 'Some error occurred while creating the artist');
   }
 };
 
 const updateArtist = async (req, res) => {
-    //#swagger.tags = ['Artists']
-  try {
+  //#swagger.tags = ['Artists']
+  if (ObjectId.isValid(req.params.id)) {
     const artistId = new ObjectId(req.params.id);
     const artist = {
         name: req.body.name,
@@ -56,27 +59,27 @@ const updateArtist = async (req, res) => {
     };
     const response = await mongodb.getDatabase().db().collection('artists').replaceOne({ _id: artistId }, artist);
     if (response.modifiedCount > 0) {
-        res.status(204).send();
+        res.status(204).json(response);
     } else {
         res.status(500).json(response.error || 'Some error occurred while updating the artist');
     }
-  } catch (error) {
-    console.log(error);
+  } else {
+    res.status(400).json('Must use a valid artist id to update a artist.');
   }
 };
 
 const deleteArtist = async (req, res) => {
-  try {
-    //#swagger.tags = ['Artists']
+  //#swagger.tags = ['Artists']
+  if (ObjectId.isValid(req.params.id)) {
     const artistId = new ObjectId(req.params.id);
     const response = await mongodb.getDatabase().db().collection('artists').deleteOne({ _id: artistId });
     if (response.deletedCount > 0) {
-        res.status(204).end();
+      res.status(200).json(repsonse);
     } else {
-        res.status(500).json(response.error || 'Some error occurred while deleting the artist');
+      res.status(500).json(response.error || 'Some error occurred while deleting the artist');
     }
-  } catch (error) {
-    console.log(error);
+  } else {
+    res.status(400).json('Must use a valid artist id to delete a artist.');
   }
 };
 
