@@ -14,7 +14,7 @@ POST http://localhost:5000/artists HTTP/1.1 Content-Type: application/json
 
 {
     "name": "Bjork",
-    "genre": "Pop"
+    "genre": "Pop",
 }
 
 ### Update artist
@@ -23,7 +23,7 @@ PUT http://localhost:5000/artists/655944022f1f800c05efdb19 HTTP/1.1 Content-Type
 
 {
     "name": "Bjork",
-    "genre": "Pop"
+    "genre": "Pop",
 }
 
 ### Delete artist
@@ -81,7 +81,7 @@ POST https://project2-sgb5.onrender.com/artists/ Content-Type: application/json
 
 {
     "name": "Bjork",
-    "genre": "Pop"
+    "genre": "Pop",
 }
 
 ### Update artist

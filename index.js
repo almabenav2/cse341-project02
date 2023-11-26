@@ -36,7 +36,7 @@ app
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: process.env.CALLBACK_URL
     },
-    function(acessToken, refreshToken, profile, done) {
+    function(accessToken, refreshToken, profile, done) {
         return done(null, profile);
     }));
 
