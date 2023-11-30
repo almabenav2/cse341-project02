@@ -6,8 +6,8 @@ const doc = {
     description: 'Songs API',
     version: '1.0.0',
   },
-  host: 'localhost:5000', 
-  schemes: ['https', 'http'],
+  host: 'project2-sgb5.onrender.com', 
+  schemes: ['http', 'https'],
 };
 
 const outputFile = './swagger.json';
