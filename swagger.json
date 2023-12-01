@@ -8,7 +8,6 @@
   "host": "project2-sgb5.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http",
     "https"
   ],
   "paths": {
