@@ -6,7 +6,7 @@ const doc = {
     description: 'Songs API',
     version: '1.0.0',
   },
-  host: 'localhost:5000', 
+  host: 'project2-sgb5.onrender.com', 
   schemes: ['http', 'https'],
 };
 
